@@ -216,63 +216,74 @@ require 'db_connect.php'; ?>
 
             </header>
             <section class="assistance-history-content">
-                <div class="table-wrapper">
-                    <div class="table-header">
-                        <h3>Assistance History</h3>
-                    </div>
-                    <table border="1" cellspacing="0" cellpadding="5">
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Distribution Date/Time</th>
-                                <th>Status</th>
-                                <th>Received Supplies</th>
-                            </tr>
-                        </thead>
-                        <tbody id="residentTableBody">
-                            <?php
-                            require_once 'db_connect.php';
+    <div class="table-wrapper">
+        <div class="table-header">
+            <h3>Assistance History</h3>
+            <input type="text" id="searchBar" class="search-container" placeholder="Search Assistance History">
+        
+        </div>
 
-                            // Fetch data from schedule_residents, scheduled_assistance, and scheduled_assistance_items for only 'received' status
-                            $sql = "
-                        SELECT 
-                            sr.fullname,
-                            sa.pickup_date AS distribution_datetime,
-                            CASE
-                                WHEN sr.assistance_status = 'received' THEN 'Received'
-                                ELSE NULL
-                            END AS assistance_status,
-                            GROUP_CONCAT(CONCAT(sai.quantity, ' ', i.unit, ' of ', i.name) SEPARATOR ', ') AS received_items
-                        FROM schedule_residents sr
-                        LEFT JOIN scheduled_assistance sa ON sr.id = sa.resident_id
-                        LEFT JOIN scheduled_assistance_items sai ON sa.id = sai.schedule_id
-                        LEFT JOIN inventory i ON sai.item_id = i.id
-                        WHERE sr.assistance_status = 'received'  -- Filter only 'received' status
-                        GROUP BY sr.id, sa.pickup_date, sr.assistance_status
-                        ORDER BY sa.pickup_date DESC
-                        ";
+        <!-- Search Bar -->
+        
 
-                            $result = $conn->query($sql);
+        <!-- Assistance History Table -->
+        <table id="assistanceHistoryTable" border="1" cellspacing="0" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Distribution Date/Time</th>
+                    <th>Status</th>
+                    <th>Received Supplies</th>
+                </tr>
+            </thead>
+            <tbody id="assistanceHistoryTableBody">
+                <?php
+                require_once 'db_connect.php';
 
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<tr>";
-                                    echo "<td>" . htmlspecialchars($row['fullname']) . "</td>";
-                                    echo "<td>" . (!empty($row['distribution_datetime']) ? htmlspecialchars($row['distribution_datetime']) : 'N/A') . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['assistance_status']) . "</td>";
-                                    echo "<td class='received-items'>" . (!empty($row['received_items']) ? htmlspecialchars($row['received_items']) : 'No supplies received') . "</td>";
-                                    echo "</tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='4' class='no-record'>No assistance history found for received status.</td></tr>";
-                            }
+                // Fetch data from schedule_residents, scheduled_assistance, and scheduled_assistance_items for only 'received' status
+                $sql = "
+                SELECT 
+                    sr.fullname,
+                    sa.pickup_date AS distribution_datetime,
+                    CASE
+                        WHEN sr.assistance_status = 'received' THEN 'Received'
+                        ELSE NULL
+                    END AS assistance_status,
+                    GROUP_CONCAT(CONCAT(sai.quantity, ' ', i.unit, ' of ', i.name) SEPARATOR ', ') AS received_items
+                FROM schedule_residents sr
+                LEFT JOIN scheduled_assistance sa ON sr.id = sa.resident_id
+                LEFT JOIN scheduled_assistance_items sai ON sa.id = sai.schedule_id
+                LEFT JOIN inventory i ON sai.item_id = i.id
+                WHERE sr.assistance_status = 'received'  -- Filter only 'received' status
+                GROUP BY sr.id, sa.pickup_date, sr.assistance_status
+                ORDER BY sa.pickup_date DESC
+                ";
 
-                            $conn->close();
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['fullname']) . "</td>";
+                        echo "<td>" . (!empty($row['distribution_datetime']) ? htmlspecialchars($row['distribution_datetime']) : 'N/A') . "</td>";
+                        echo "<td>" . htmlspecialchars($row['assistance_status']) . "</td>";
+                        echo "<td class='received-items'>" . (!empty($row['received_items']) ? htmlspecialchars($row['received_items']) : 'No supplies received') . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='4' class='no-record'>No assistance history found for received status.</td></tr>";
+                }
+
+                $conn->close();
+                ?>
+            </tbody>
+        </table>
+
+        <!-- Pagination Controls -->
+        <div id="paginationControls"></div>
+    </div>
+</section>
+
         </main>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
@@ -313,6 +324,72 @@ require 'db_connect.php'; ?>
                 if (profileMenu) profileMenu.classList.remove('show');
             });
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("assistanceHistoryTable");
+    const rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+    const searchBar = document.getElementById("searchBar");
+    const paginationControls = document.getElementById("paginationControls");
+    const rowsPerPage = 5;  // Change this number to adjust the number of rows per page
+    let currentPage = 1;
+
+    // Pagination Functionality
+    function displayPage(page) {
+        const startIndex = (page - 1) * rowsPerPage;
+        const endIndex = page * rowsPerPage;
+
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].style.display = i >= startIndex && i < endIndex ? "" : "none";
+        }
+
+        // Update pagination controls
+        updatePaginationControls();
+    }
+
+    function updatePaginationControls() {
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
+        paginationControls.innerHTML = "";  // Clear existing controls
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement("button");
+            pageButton.textContent = i;
+            pageButton.className = i === currentPage ? "active" : "";  // Add active class to the current page
+            pageButton.addEventListener("click", function () {
+                currentPage = i;
+                displayPage(i);
+            });
+            paginationControls.appendChild(pageButton);
+        }
+    }
+
+    // Search Functionality
+    searchBar.addEventListener("input", function () {
+        const filter = searchBar.value.toLowerCase();
+        let visibleRowCount = 0;
+
+        for (let i = 0; i < rows.length; i++) {
+            const rowText = rows[i].textContent.toLowerCase();
+            if (rowText.includes(filter)) {
+                rows[i].style.display = "";  // Show the row
+                visibleRowCount++;
+            } else {
+                rows[i].style.display = "none";  // Hide the row
+            }
+        }
+
+        // Update pagination after filtering
+        if (filter === "") {
+            currentPage = 1;  // Reset to page 1 if search is cleared
+            displayPage(1);
+        } else {
+            currentPage = 1;  // Reset to page 1 after filtering
+            updatePaginationControls();
+        }
+    });
+
+    // Initial Setup: Display the first page
+    displayPage(currentPage);
+});
         </script>
 </body>
 

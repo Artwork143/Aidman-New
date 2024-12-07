@@ -61,3 +61,65 @@ document.getElementById('view-profile').addEventListener('click', function (e) {
             console.error('Error loading profile:', error);
         });
 });
+
+// Sweet Alert For Offcial-Aid-dashboard.php
+document.querySelectorAll('.edit-btn').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default action of the link
+        const id = this.getAttribute('official-data-id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to edit this entry?",
+            icon: 'info',
+            background: '#f4f4f4',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '<i class="fas fa-check"></i> Yes, edit it!',
+            cancelButtonText: '<i class="fas fa-times"></i> No, cancel!',
+            showCancelButton: true, // Show the "No" button
+            customClass: {
+                container: 'swal2-container',
+                title: 'swal2-title',
+                content: 'swal2-content',
+                confirmButton: 'swal2-confirm',
+                cancelButton: 'swal2-cancel'
+            }
+            
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `official-edit-data.php?id=${id}`;
+            }
+        });
+    });
+});
+
+document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default action of the link
+        const id = this.getAttribute('official-data-id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'error',
+            background: '#f4f4f4',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '<i class="fas fa-trash-alt"></i> Yes, delete it!',
+            cancelButtonText: '<i class="fas fa-ban"></i> No, cancel!',
+            showCancelButton: true, // Show the "No" button
+            customClass: {
+                container: 'swal2-container',
+                title: 'swal2-title',
+                content: 'swal2-content',
+                confirmButton: 'swal2-confirm',
+                cancelButton: 'swal2-cancel'
+            },
+        
+            
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `official-delete-data.php?id=${id}`;
+            }
+        });
+    });
+});

@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             document.getElementById('total-all').textContent = data.total_all;
             document.getElementById('total-officials').textContent = data.total_officials;
+            document.getElementById('total-admin').textContent = data.total_admin;
+            document.getElementById('total-purok').textContent = data.total_purok;
             document.getElementById('total-residents').textContent = data.total_residents;
+            document.getElementById('total_calamities').textContent = data.total_calamities;
         })
         .catch(error => console.error('Error fetching data:', error));
 

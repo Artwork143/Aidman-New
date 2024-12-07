@@ -1,5 +1,7 @@
+<?php include 'check_resident.php'; ?>
+
+
 <?php
-session_start(); // Start session at the beginning
 
 // Include database connection
 include 'db_connect.php';
@@ -269,7 +271,7 @@ $conn->close();
             </div>
             <nav>
                 <ul>
-                    <li><a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="resident-dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 </ul>
             </nav>
         </aside>

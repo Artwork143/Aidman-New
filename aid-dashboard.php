@@ -163,8 +163,19 @@
                 <div class="card-header card-header-left">
                     <h3>Resident Registration Form</h3>
                     <form action="submit_aid.php" method="post">
-                        <label for="name">Name:</label>
+                        <label for="name">Calamity:</label>
                         <input type="text" id="name" name="name" required><br>
+
+                        <label for="name">Fullname:</label>
+                        <input type="text" id="name" name="name" required><br>
+
+                        <label for="name">Mobile Number:</label>
+                        <input type="number" id="number" name="number" required><br>
+
+                        <label for="name">Purok:</label>
+                        <input type="text" id="name" name="name" required><br>
+
+                        <div class="divider"></div>
 
                         <label for="damage_severity">Damage Severity (1-10):</label>
                         <input type="number" id="damage_severity" name="damage_severity" min="1" max="10" required><br>

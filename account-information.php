@@ -46,8 +46,8 @@ $conn->close();
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/account-info.css">
     <!-- Link to Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
+    <link rel="stylesheet" href="font-awesome/css/all.min.css">
+    </head>
 <body class="account-info-page">
     <!-- Back to Dashboard button with dynamic URL based on user role -->
     <a href="<?php 

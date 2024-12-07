@@ -249,3 +249,23 @@ table tbody tr:hover {
         display: inline-block;
     }
 }
+
+
+#paginationControls {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#paginationControls button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+    cursor: pointer;
+}
+
+#paginationControls button.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}

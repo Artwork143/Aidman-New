@@ -12,11 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Define weights
     $weights = [
-        'damage_severity' => 0.40,
+        'damage_severity' => 0.30,
         'number_of_occupants' => 0.20,
         'vulnerability' => 0.20,
-        'income_level' => 0.10,
-        'special_needs' => 0.10
+        'income_level' => 0.15,
+        'special_needs' => 0.15
     ];
 
     // Calculate total score

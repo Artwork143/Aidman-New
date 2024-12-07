@@ -329,92 +329,82 @@ require 'db_connect.php'; ?>
             </header>
 
             <section class="assistance-history-content">
-                <div class="table-wrapper">
-                    <div class="table-header">
-                        <h3>Scheduled Residents</h3>
-                        <button id="addResidentBtn" class="btn-add">Add Resident</button>
-                    </div>
-                    <table border="1" cellspacing="0" cellpadding="5">
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Distribution Date/Time</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="residentTableBody">
-                            <?php
-                            require_once 'db_connect.php';
+    <div class="table-wrapper">
+        <div class="table-header">
+            <h3>Scheduled Residents</h3>
+            <button id="addResidentBtn" class="btn-add">Add Resident</button>
+        </div>
+        <!-- Search bar -->
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search residents..." />
+        </div>
+        <!-- Paginated Table -->
+        <table id="residentTable" border="1" cellspacing="0" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Distribution Date/Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="residentTableBody">
+                <?php
+                require_once 'db_connect.php';
 
-                            // Fetch data from schedule_residents with the latest schedule details, excluding those with 'received' status
-                            $sql = "
-    SELECT 
-        sr.id,
-        sr.fullname,
-        sa.pickup_date AS distribution_datetime,
-        COALESCE(
-            CASE
-                WHEN sr.assistance_status = 'for pickup' THEN 'For Pickup'
-                WHEN sr.assistance_status = 'received' THEN 'Received'
-                ELSE 'Eligible'
-            END,
-            'Eligible'
-        ) AS assistance_status
-    FROM schedule_residents sr
-    LEFT JOIN (
-        SELECT id, resident_id, pickup_date
-        FROM scheduled_assistance
-        WHERE id IN (
-            SELECT MAX(id) 
-            FROM scheduled_assistance 
-            GROUP BY resident_id
-        )
-    ) sa ON sr.id = sa.resident_id
-    WHERE sr.assistance_status != 'received'  -- Exclude residents with 'received' status
-    ";
+                $sql = "
+                    SELECT 
+                        sr.id,
+                        sr.fullname,
+                        sa.pickup_date AS distribution_datetime,
+                        COALESCE(
+                            CASE
+                                WHEN sr.assistance_status = 'for pickup' THEN 'For Pickup'
+                                WHEN sr.assistance_status = 'received' THEN 'Received'
+                                ELSE 'Eligible'
+                            END,
+                            'Eligible'
+                        ) AS assistance_status
+                    FROM schedule_residents sr
+                    LEFT JOIN (
+                        SELECT id, resident_id, pickup_date
+                        FROM scheduled_assistance
+                        WHERE id IN (
+                            SELECT MAX(id) 
+                            FROM scheduled_assistance 
+                            GROUP BY resident_id
+                        )
+                    ) sa ON sr.id = sa.resident_id
+                    WHERE sr.assistance_status != 'received'
+                ";
 
-                            $result = $conn->query($sql);
+                $result = $conn->query($sql);
 
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<tr>";
-                                    echo "<td>" . htmlspecialchars($row['fullname']) . "</td>";
-                                    echo "<td>" . (!empty($row['distribution_datetime']) ? htmlspecialchars($row['distribution_datetime']) : 'N/A') . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['assistance_status']) . "</td>";
-                                    echo "<td>";
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['fullname']) . "</td>";
+                        echo "<td>" . (!empty($row['distribution_datetime']) ? htmlspecialchars($row['distribution_datetime']) : 'N/A') . "</td>";
+                        echo "<td>" . htmlspecialchars($row['assistance_status']) . "</td>";
+                        echo "<td>";
+                        echo "<button class='btn-edit' data-resident-id='" . htmlspecialchars($row['id']) . "' data-fullname='" . htmlspecialchars($row['fullname']) . "' data-distribution-date='" . htmlspecialchars($row['distribution_datetime']) . "' data-status='" . htmlspecialchars($row['assistance_status']) . "'>Edit</button>";
+                        echo "<button class='btn-delete' data-resident-id='" . htmlspecialchars($row['id']) . "'>Delete</button>";
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='4'>No residents found.</td></tr>";
+                }
 
-                                    echo "<button 
-                        class='btn-edit' 
-                        data-resident-id='" . htmlspecialchars($row['id']) . "' 
-                        data-fullname='" . htmlspecialchars($row['fullname']) . "' 
-                        data-distribution-date='" . htmlspecialchars($row['distribution_datetime']) . "' 
-                        data-status='" . htmlspecialchars($row['assistance_status']) . "'>
-                        Edit
-                      </button>";
+                $conn->close();
+                ?>
+            </tbody>
+        </table>
+        <!-- Pagination Controls -->
+        <div id="paginationControls"></div>
+    </div>
+</section>
 
-                                    // Delete button
-                                    echo "<button 
-                    class='btn-delete' 
-                    data-resident-id='" . htmlspecialchars($row['id']) . "'>
-                    Delete
-                  </button>";
-
-
-                                    echo "</td>";
-                                    echo "</tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='4'>No residents found.</td></tr>";
-                            }
-
-                            $conn->close();
-                            ?>
-                        </tbody>
-
-                    </table>
-                </div>
-            </section>
 
 
         </main>
@@ -501,6 +491,15 @@ require 'db_connect.php'; ?>
         </div>
     </div>
 
+    <!-- Logout Confirmation Modal -->
+    <div id="logout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Are you sure you want to logout?</h2>
+            <button id="confirm-logout" class="btn">Yes</button>
+            <button id="cancel-logout" class="btn">No</button>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.2/dist/sweetalert2.min.js"></script>
     <script src="js/admin-dashboard.js"></script>
@@ -898,17 +897,114 @@ require 'db_connect.php'; ?>
                     alert(`Error: ${error.message}`);
                 });
         });
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const logoutLink = document.getElementById("logout-link"); // Link that triggers the logout modal
+            const logoutModal = document.getElementById("logout-modal"); // Modal element
+            const confirmLogout = document.getElementById("confirm-logout"); // Confirm button
+            const cancelLogout = document.getElementById("cancel-logout"); // Cancel button
+            const closeSpan = logoutModal.querySelector(".close"); // Close button (X)
+
+            // Function to open the modal
+            const openModal = () => {
+                logoutModal.style.display = "block";
+                document.body.style.overflow = "hidden"; // Disable background scroll
+            };
+
+            // Function to close the modal
+            const closeModal = () => {
+                logoutModal.style.display = "none";
+                document.body.style.overflow = "auto"; // Enable background scroll
+            };
+
+            // Event listener to open the modal
+            logoutLink?.addEventListener("click", (e) => {
+                e.preventDefault(); // Prevent navigation
+                openModal();
+            });
+
+            // Event listener for confirm logout
+            confirmLogout?.addEventListener("click", () => {
+                window.location.href = logoutLink.href; // Redirect to logout
+            });
+
+            // Event listeners to close the modal
+            cancelLogout?.addEventListener("click", closeModal);
+            closeSpan?.addEventListener("click", closeModal);
+            window.addEventListener("click", (e) => {
+                if (e.target === logoutModal) closeModal(); // Close if clicking outside modal
+            });
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("residentTable");
+    const rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+    const searchBar = document.getElementById("searchBar");
+    const paginationControls = document.getElementById("paginationControls");
+    const rowsPerPage = 5;
+    let currentPage = 1;
+
+    // Pagination Functionality
+    function displayPage(page) {
+        const startIndex = (page - 1) * rowsPerPage;
+        const endIndex = page * rowsPerPage;
+
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].style.display = i >= startIndex && i < endIndex ? "" : "none";
+        }
+
+        // Update pagination controls
+        updatePaginationControls();
+    }
+
+    function updatePaginationControls() {
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
+        paginationControls.innerHTML = "";
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement("button");
+            pageButton.textContent = i;
+            pageButton.className = i === currentPage ? "active" : "";
+            pageButton.addEventListener("click", function () {
+                currentPage = i;
+                displayPage(i);
+            });
+            paginationControls.appendChild(pageButton);
+        }
+    }
+
+    // Search Functionality
+    searchBar.addEventListener("input", function () {
+        const filter = searchBar.value.toLowerCase();
+        let visibleRowCount = 0;
+
+        for (let i = 0; i < rows.length; i++) {
+            const rowText = rows[i].textContent.toLowerCase();
+            if (rowText.includes(filter)) {
+                rows[i].style.display = "";
+                visibleRowCount++;
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+
+        // Update pagination after filtering
+        if (filter === "") {
+            displayPage(1);
+        } else {
+            currentPage = 1;
+            updatePaginationControls();
+        }
+    });
+
+    // Initial Setup
+    displayPage(currentPage);
+});
+
     </script>
 
 </body>
-<!-- Logout Confirmation Modal -->
-<div id="logout-modal" class="logout-modal">
-    <div class="logout-content">
-        <span class="close">&times;</span>
-        <h2>Are you sure you want to logout?</h2>
-        <button id="confirm-logout" class="btn">Yes</button>
-        <button id="cancel-logout" class="btn">No</button>
-    </div>
-</div>
 
 </html>

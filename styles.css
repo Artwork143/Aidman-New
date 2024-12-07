@@ -4,6 +4,8 @@ body {
   font-family: Arial, sans-serif;
 }
 
+
+
 /* --------------------------------------- */
 /* Loading Screen Styles for index.php */
 /* --------------------------------------- */
@@ -69,6 +71,7 @@ h1 {
   font-weight: 700;
   letter-spacing: 1px;
 }
+
 
 /* --------------------------------------- */
 /* Enhanced Registration Form Styles for reg-forum.php */
@@ -671,7 +674,24 @@ header h2 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none; /* Remove underline */
 }
+/* Specific background colors for each card */
+.card-purok {
+  background-color: #f28b82; /* Vibrant red for Purok */
+  border: 1px solid #f28b82; /* Matching red border */
+}
+
+.card-residents {
+  background-color: #81c995; /* Vibrant green for Residents */
+  border: 1px solid #81c995; /* Matching green border */
+}
+
+.card-calamity-list {
+  background-color: #fbbc04; /* Vibrant yellow for Calamity List */
+  border: 1px solid #fbbc04; /* Matching yellow border */
+}
+
 
 .card:hover {
   transform: translateY(-5px);
@@ -693,7 +713,7 @@ header h2 {
 .card p {
   font-size: 28px;
   font-weight: bold;
-  color: #007bff;
+  color: #007bff; /* Text color matches icons */
   margin: 0;
 }
 .input-error {
@@ -899,75 +919,73 @@ header h2 {
 /* --------------------------------------- */
 
 /* --------------------------------------- */
-/* Unique Styles for Card Container */
+/* Compact Styles for Card Container */
 /* --------------------------------------- */
 
 #unique-card-container {
   display: flex;
-  justify-content: space-between;
-  padding: 20px;
+  justify-content: space-around;
+  padding: 16px;
   margin: 0 auto;
-  background-color: #f9f9f9; /* Light background for card container */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 1200px; /* Adjust width as needed */
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
   width: 100%;
-}
-
-/* Container for card headers */
-#unique-card-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px; /* Add some spacing between the cards */
+  gap: 16px; /* Add spacing between cards */
 }
 
 /* Common card header styles */
 .card-header {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  flex: 1; /* Allow cards to grow evenly */
 }
 
-/* Left card header styles */
-.card-header-left {
-  width: 45%; /* Slightly smaller width */
-  background-color: #ffffff; /* White background */
+.card-header h3 {
+  font-size: 20px;
+  color: #007bff;
+  margin-bottom: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  font-family: 'Roboto', sans-serif;
 }
 
-.card-header-left h3 {
-  font-size: 20px; /* Smaller font size */
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.card-header-left label {
+.card-header label {
   display: block;
   margin-bottom: 6px;
   font-size: 14px;
-  color: #555;
+  color: #333;
+  font-weight: 600;
+  text-shadow: 0.5px 0.5px 2px rgba(0, 0, 0, 0.2);
+  font-family: 'Roboto', sans-serif;
 }
 
-.card-header-left input[type="text"],
-.card-header-left input[type="number"] {
-  width: calc(100% - 22px);
+.card-header input[type="text"],
+.card-header input[type="number"] {
+  width: 100%;
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Roboto', sans-serif;
 }
 
-.card-header-left input[type="text"]:focus,
-.card-header-left input[type="number"]:focus {
+.card-header input[type="text"]:focus,
+.card-header input[type="number"]:focus {
   border-color: #007bff;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
   outline: none;
 }
 
-.card-header-left input[type="submit"] {
+.card-header input[type="submit"] {
   width: 100%;
   padding: 12px;
   background-color: #007bff;
@@ -975,14 +993,43 @@ header h2 {
   border-radius: 4px;
   color: #fff;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  font-family: 'Roboto', sans-serif;
 }
 
-.card-header-left input[type="submit"]:hover {
+.card-header input[type="submit"]:hover {
   background-color: #0056b3;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
+
+/* Enhanced Divider Line */
+.divider {
+  margin: 20px 0;
+  border-top: 2px dashed #007bff;
+  position: relative;
+  text-align: center;
+}
+
+.divider::before {
+  content: " ✨ ";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f9f9f9;
+  padding: 0 10px;
+  font-weight: bold;
+  color: #007bff;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+  font-family: 'Roboto', sans-serif;
+}
+
 
 /* Right card header styles */
 .card-header-right {
@@ -1124,7 +1171,7 @@ header h2 {
   color: #2c3e50; /* Dark color for the name */
   margin: 0 15px; /* Margin around name */
   white-space: nowrap; /* Prevent text from wrapping */
-  overflow: hidden; /* Hide overflowing text */
+  overflow: hidden; /* Hide overflo g text */
   text-overflow: ellipsis; /* Show ellipsis for overflowed text */
 }
 
@@ -2042,6 +2089,85 @@ header h2 {
   }
 }
 
+/* Search bar styling */
+#residentlist-search-bar {
+  display: flex;
+  align-items: center; /* Vertically center the input and button */
+  gap: 8px; /* Add spacing between the input and button */
+}
+
+#residentlist-search-bar input[type="text"] {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+#residentlist-search-bar input[type="text"]:focus {
+  border-color: #007bff; /* Blue border on focus */
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+#residentlist-search-bar button {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#residentlist-search-bar button:hover {
+  background-color: #0056b3;
+}
+
+#residentlist-search-bar button:active {
+  background-color: #003f7f;
+}
+
+/* Container for the button and search bar */
+.table-controls {
+  display: flex;
+  justify-content: space-between; /* Position button to the left and search bar to the right */
+  align-items: center; /* Vertically center the button and search bar */
+  margin-bottom: 15px; /* Add spacing between controls and table */
+}
+
+/* Stylish Add Resident Button */
+.add-resident-button {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #28a745; /* Green for "Add" action */
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-resident-button:hover {
+  background-color: #218838; /* Darker green on hover */
+  transform: scale(1.05); /* Slight zoom-in effect */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.add-resident-button:active {
+  background-color: #1e7e34; /* Even darker green on click */
+  transform: scale(0.95); /* Slight shrink effect */
+}
+
+
+
+
+
+
+
 /* --------------------------------------- */
 /* EVENT CONTROL STYLES*/
 /* --------------------------------------- */
@@ -2849,3 +2975,324 @@ body.account-info-page {
         padding: 15px;
     }
 }
+
+
+
+/* Search Bar Styling */
+.search-container {
+  margin-bottom: 15px;
+}
+
+#searchBar {
+  width: 30%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+
+/* Pagination Styling */
+#paginationControls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+#paginationControls button {
+  padding: 8px 14px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#paginationControls button:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+#paginationControls button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  pointer-events: none;
+}
+
+  /* Grid layout for the cards */
+  #calamity-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 25px;
+}
+
+/* Enhanced 3D card styles */
+#calamity-card .card {
+    background: linear-gradient(145deg, #f0f0f0, #dcdcdc);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    text-decoration: none; /* Remove underline */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#calamity-card .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+#calamity-card .card-icon {
+    font-size: 3.5rem;
+    color: #007bff;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+#calamity-card h3 {
+    font-size: 22px;
+    color: #333;
+    margin: 15px 0;
+    font-weight: bold;
+}
+
+#calamity-card .view-details-container {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+}
+
+#calamity-card .view-details-btn {
+    background: linear-gradient(145deg, #007bff, #005bb5);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.2);
+}
+
+#calamity-card .view-details-btn:hover {
+    background: linear-gradient(145deg, #005bb5, #003f87);
+    transform: translateY(-3px);
+}
+
+/* Add Calamity Button with 3D effect */
+.add-calamity-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+}
+
+.add-calamity-btn {
+    background: linear-gradient(145deg, #28a745, #1e7e34);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2), -5px -5px 15px rgba(255, 255, 255, 0.2);
+}
+
+.add-calamity-btn:hover {
+    background: linear-gradient(145deg, #1e7e34, #155724);
+    transform: translateY(-5px);
+}
+
+#ranking-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+@media (min-width: 768px) {
+  #ranking-container {
+      flex-direction: row;
+  }
+}
+
+#ranking-left {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+#ranking-left .form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#ranking-left .form-group input, #ranking-left .form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#ranking-divider {
+  border: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+/* Main Container for Purok Table */
+#purok-pages {
+  margin: 40px auto;
+  padding: 20px;
+  max-width: 1200px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Soft shadow to lift the table */
+  overflow-x: auto; /* Make table scrollable on smaller screens */
+}
+
+/* Table Styling */
+#purok-pages .purok-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f9f9f9; /* Light background */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Header Styling (Removed hover effect) */
+#purok-pages .purok-table thead {
+  background-color: #4A90E2; /* Professional blue color */
+  color: #ffffff;
+  text-align: left;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  padding: 12px;
+}
+
+/* Removed hover effect for th */
+#purok-pages .purok-table th {
+  cursor: default; /* No cursor change */
+}
+
+/* Table Cells */
+#purok-pages .purok-table th, #purok-pages .purok-table td {
+  padding: 15px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Numbering Column (Left Column) */
+#purok-pages .purok-table td.numbering {
+  background-color: #f1f1f1; /* Light gray background */
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  width: 40px;
+}
+
+/* Column Divider Lines */
+#purok-pages .purok-table td:nth-child(2) {
+  border-right: 1px solid #ddd; /* Border between Numbering and Purok Name */
+}
+
+#purok-pages .purok-table td:nth-child(3) {
+  border-left: 1px solid #ddd;  /* Border between Purok Name and Resident */
+  border-right: 1px solid #ddd; /* Border between Resident and Action */
+}
+
+#purok-pages .purok-table td:nth-child(4) {
+  border-left: 1px solid #ddd;  /* Border between Resident and Action */
+}
+
+/* Table Row Hover Effect (only on row, not the Purok Name) */
+#purok-pages .purok-table tr:hover {
+  background-color: #e6f3ff; /* Light blue on hover for clarity */
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Action Link (View Details) */
+#purok-pages .purok-table td a.view-details {
+  text-decoration: none;
+  color: #4A90E2; /* Blue color for links */
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid #4A90E2;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+/* Action Link Hover Effect */
+#purok-pages .purok-table td a.view-details:hover {
+  color: #ffffff;
+  background-color: #4A90E2;
+  border-color: #4A90E2;
+}
+
+/* Responsive Design for Mobile Devices */
+@media (max-width: 768px) {
+  #purok-pages .purok-table th,
+  #purok-pages .purok-table td {
+      font-size: 13px;
+      padding: 12px; /* Adjust padding for smaller screens */
+  }
+
+  #purok-pages .purok-table td a.view-details {
+      padding: 6px 12px;
+  }
+
+  /* Adjust column layout for smaller screens */
+  #purok-pages .purok-table td.numbering {
+      width: 30px; /* Make numbering column smaller */
+  }
+
+  #purok-pages .purok-table td:nth-child(2),
+  #purok-pages .purok-table td:nth-child(3),
+  #purok-pages .purok-table td:nth-child(4) {
+      font-size: 12px; /* Reduce font size in smaller screens */
+  }
+}
+
+/* Mobile View Adjustments */
+@media (max-width: 480px) {
+  #purok-pages .purok-table th,
+  #purok-pages .purok-table td {
+      font-size: 12px;
+      padding: 10px; /* Reduce padding for very small screens */
+  }
+
+  #purok-pages .purok-table td a.view-details {
+      padding: 6px 10px;
+      font-size: 12px; /* Smaller font for mobile */
+  }
+
+  /* Adjust layout for mobile view */
+  #purok-pages .purok-table td.numbering {
+      width: 25px; /* Even smaller numbering column */
+  }
+
+  #purok-pages .purok-table td:nth-child(2),
+  #purok-pages .purok-table td:nth-child(3),
+  #purok-pages .purok-table td:nth-child(4) {
+      font-size: 11px; /* Further reduce font size */
+  }
+}
+

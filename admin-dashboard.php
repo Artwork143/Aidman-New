@@ -10,7 +10,7 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/admin-dashboard.css"> <!-- Updated link -->
-    <!-- Link to Font Awesome for icons -->
+    <link rel="stylesheet" href="font-awesome/css/all.min.css">
     <style>
         .notification-bell {
             position: relative;
@@ -57,7 +57,6 @@
             background-color: #f1f1f1;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
@@ -70,7 +69,7 @@
             <nav>
                 <ul>
                     <li class="nav-item active"><a href="admin-dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="aid-dashboard.php"><i class="fas fa-chart-line"></i> Aid Priority Ranking</a></li>
+                    <li><a href="ranking_resident.php"><i class="fas fa-chart-line"></i> Aid Priority Ranking</a></li>
                     <li><a href="inventory-dashboard.php"><i class="fas fa-warehouse"></i> Inventory System</a></li>
                     <li class="arrow-dropdown">
                         <div class="arrow-dropdown-toggle" id="account-control-link">
@@ -81,8 +80,10 @@
                             <a href="account-management.php"><i class="fa-solid fa-file-invoice"></i> Account Management</a>
                         </div>
                     </li>
-                    <li><a href="event-control-system.php"><i class="fas fa-calendar-alt fa-lg mr-2"></i> Event Control System</a></li>
-                    <li><a href="assistance-scheduling.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Assistance Scheduling</a></li>
+                    <li><a href="resident_lists.php"><i class="fas fa-calendar-alt fa-lg mr-2"></i> Resident List</a></li>
+                    <li><a href="purok-page2.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Purok List</a></li>
+                    <li><a href="calamity_list.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Calamity List</a></li>
+
                 </ul>
             </nav>
         </aside>
@@ -165,19 +166,45 @@
                 </div>
                 <div class="card">
                     <div class="card-icon">
-                        <i class="fas fa-user-tie"></i>
+                        <i class="fas fa-user"></i>
                     </div>
                     <h3>Total Official Account</h3>
                     <p id="total-officials">Loading...</p>
                 </div>
                 <div class="card">
                     <div class="card-icon">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-user-tie"></i>
                     </div>
-                    <h3>Total Resident Account</h3>
-                    <p id="total-residents">Loading...</p>
+                    <h3>Total Admin Account</h3>
+                    <p id="total-admin">Loading...</p>
                 </div>
-            </section>
+                        <!-- Purok Card -->
+            <a href="purok-page2.php" class="card card-purok">
+                <div class="card-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Purok</h3>
+                <p id="total-purok">Loading...</p>
+            </a>
+
+            <!-- Residents Card -->
+            <a href="/residents-page" class="card card-residents">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Residents</h3>
+                <p id="total-residents">Loading...</p>
+            </a>
+
+            <!-- Calamity List Card -->
+            <a href="calamity_list.php" class="card card-calamity-list">
+                <div class="card-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>Calamity List</h3>
+                <p id="total_calamities">Loading...</p>
+            </a>
+        </section>
         </main>
     </div>
     <script src="js/admin-dashboard.js"></script>

@@ -32,8 +32,8 @@ if (isset($_GET['id'])) {
         $total_score = $damage_severity * 0.4 +
                        $number_of_occupants * 0.2 +
                        $vulnerability * 0.2 +
-                       $income_level * 0.1 +
-                       $special_needs * 0.1;
+                       $income_level * 0.15 +
+                       $special_needs * 0.15;
 
         // Update database
         try {
