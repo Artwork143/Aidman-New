@@ -43,9 +43,9 @@
                             </a>
                         </div>
                     </li>
-                    <li><a href="event-control-system.php"><i class="fas fa-calendar-alt fa-lg mr-2"></i> Event Control System</a></li>
-                    <li><a href="assistance-scheduling.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Assistance Scheduling</a></li>
-                </ul>
+                    <li><a href="resident_lists.php"><i class="fas fa-calendar-alt fa-lg mr-2"></i> Resident List</a></li>
+                    <li><a href="purok-page2.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Purok List</a></li>
+                    <li><a href="calamity_list.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Calamity List</a></li>
             </nav>
         </aside>
         <main>

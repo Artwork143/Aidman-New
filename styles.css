@@ -4,8 +4,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-
-
 /* --------------------------------------- */
 /* Loading Screen Styles for index.php */
 /* --------------------------------------- */
@@ -71,7 +69,6 @@ h1 {
   font-weight: 700;
   letter-spacing: 1px;
 }
-
 
 /* --------------------------------------- */
 /* Enhanced Registration Form Styles for reg-forum.php */
@@ -692,7 +689,6 @@ header h2 {
   border: 1px solid #fbbc04; /* Matching yellow border */
 }
 
-
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -747,24 +743,24 @@ header h2 {
   transform: translate(-50%, -50%); /* Adjust for exact centering */
 }
 
-#notification-modal.modal{
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px); /* Apply blur effect to the background */
+#notification-modal.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px); /* Apply blur effect to the background */
 }
 
 #notification-modal .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 300px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 300px;
 }
 
 #logout-modal .close {
@@ -953,7 +949,7 @@ header h2 {
   text-transform: uppercase;
   letter-spacing: 1.5px;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .card-header label {
@@ -963,7 +959,7 @@ header h2 {
   color: #333;
   font-weight: 600;
   text-shadow: 0.5px 0.5px 2px rgba(0, 0, 0, 0.2);
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .card-header input[type="text"],
@@ -975,7 +971,7 @@ header h2 {
   border-radius: 4px;
   font-size: 14px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .card-header input[type="text"]:focus,
@@ -998,7 +994,7 @@ header h2 {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   text-transform: uppercase;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .card-header input[type="submit"]:hover {
@@ -1027,9 +1023,8 @@ header h2 {
   font-size: 20px;
   letter-spacing: 1.5px;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
-
 
 /* Right card header styles */
 .card-header-right {
@@ -2162,12 +2157,6 @@ header h2 {
   transform: scale(0.95); /* Slight shrink effect */
 }
 
-
-
-
-
-
-
 /* --------------------------------------- */
 /* EVENT CONTROL STYLES*/
 /* --------------------------------------- */
@@ -2887,96 +2876,93 @@ body.account-info-page {
   }
 }
 
-  /* Main content section */
-  .assistance-history-content {
-    padding: 20px;
-    margin-top: 20px;
+/* Main content section */
+.assistance-history-content {
+  padding: 20px;
+  margin-top: 20px;
 }
 
 /* Table container */
 .table-wrapper {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Table header */
 .table-header-section {
-    margin-bottom: 20px;
-    font-size: 1.5em;
-    color: #333;
-    font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #333;
+  font-weight: bold;
 }
 
 /* Custom class for the professional table */
 .professional-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    text-align: left;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  text-align: left;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .professional-table th,
 .professional-table td {
-    padding: 12px;
-    text-align: center;
-    font-size: 14px;
-    border-bottom: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  border-bottom: 1px solid #ddd;
 }
 
 .professional-table th {
-    background-color: #3498db;
-    color: #fff;
-    font-weight: 600;
+  background-color: #3498db;
+  color: #fff;
+  font-weight: 600;
 }
 
 .professional-table td {
-    background-color: #ecf0f1;
+  background-color: #ecf0f1;
 }
 
 .professional-table td a {
-    text-decoration: none;
-    color: #3498db;
+  text-decoration: none;
+  color: #3498db;
 }
 
 .professional-table td a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .professional-table tr:hover td {
-    background-color: #f1f4f7;
+  background-color: #f1f4f7;
 }
 
 .no-record {
-    text-align: center;
-    color: #7f8c8d;
-    font-style: italic;
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
 }
 
 .received-items {
-    text-align: left;
+  text-align: left;
 }
 
 /* Mobile responsiveness */
 @media screen and (max-width: 768px) {
+  .professional-table,
+  .professional-table th,
+  .professional-table td {
+    font-size: 12px;
+  }
 
-    .professional-table,
-    .professional-table th,
-    .professional-table td {
-        font-size: 12px;
-    }
-
-    .table-wrapper {
-        padding: 15px;
-    }
+  .table-wrapper {
+    padding: 15px;
+  }
 }
-
-
 
 /* Search Bar Styling */
 .search-container {
@@ -2991,7 +2977,6 @@ body.account-info-page {
   font-size: 14px;
   box-sizing: border-box;
 }
-
 
 /* Pagination Styling */
 #paginationControls {
@@ -3025,91 +3010,94 @@ body.account-info-page {
   pointer-events: none;
 }
 
-  /* Grid layout for the cards */
-  #calamity-card {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    padding: 25px;
+/* Grid layout for the cards */
+#calamity-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 25px;
 }
 
 /* Enhanced 3D card styles */
 #calamity-card .card {
-    background: linear-gradient(145deg, #f0f0f0, #dcdcdc);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
-    text-align: center;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    text-decoration: none; /* Remove underline */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  background: linear-gradient(145deg, #f0f0f0, #dcdcdc);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1),
+    -10px -10px 20px rgba(255, 255, 255, 0.7);
+  text-align: center;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  text-decoration: none; /* Remove underline */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 #calamity-card .card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-10px);
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 #calamity-card .card-icon {
-    font-size: 3.5rem;
-    color: #007bff;
-    margin-bottom: 20px;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+  font-size: 3.5rem;
+  color: #007bff;
+  margin-bottom: 20px;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 #calamity-card h3 {
-    font-size: 22px;
-    color: #333;
-    margin: 15px 0;
-    font-weight: bold;
+  font-size: 22px;
+  color: #333;
+  margin: 15px 0;
+  font-weight: bold;
 }
 
 #calamity-card .view-details-container {
-    margin-top: auto;
-    display: flex;
-    justify-content: center;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
 }
 
 #calamity-card .view-details-btn {
-    background: linear-gradient(145deg, #007bff, #005bb5);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.2);
+  background: linear-gradient(145deg, #007bff, #005bb5);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2),
+    -4px -4px 8px rgba(255, 255, 255, 0.2);
 }
 
 #calamity-card .view-details-btn:hover {
-    background: linear-gradient(145deg, #005bb5, #003f87);
-    transform: translateY(-3px);
+  background: linear-gradient(145deg, #005bb5, #003f87);
+  transform: translateY(-3px);
 }
 
 /* Add Calamity Button with 3D effect */
 .add-calamity-container {
-    display: flex;
-    justify-content: center;
-    margin: 30px;
+  display: flex;
+  justify-content: center;
+  margin: 30px;
 }
 
 .add-calamity-btn {
-    background: linear-gradient(145deg, #28a745, #1e7e34);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 50px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2), -5px -5px 15px rgba(255, 255, 255, 0.2);
+  background: linear-gradient(145deg, #28a745, #1e7e34);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2),
+    -5px -5px 15px rgba(255, 255, 255, 0.2);
 }
 
 .add-calamity-btn:hover {
-    background: linear-gradient(145deg, #1e7e34, #155724);
-    transform: translateY(-5px);
+  background: linear-gradient(145deg, #1e7e34, #155724);
+  transform: translateY(-5px);
 }
 
 #ranking-container {
@@ -3121,7 +3109,7 @@ body.account-info-page {
 
 @media (min-width: 768px) {
   #ranking-container {
-      flex-direction: row;
+    flex-direction: row;
   }
 }
 
@@ -3142,7 +3130,8 @@ body.account-info-page {
   margin-bottom: 5px;
 }
 
-#ranking-left .form-group input, #ranking-left .form-group select {
+#ranking-left .form-group input,
+#ranking-left .form-group select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
@@ -3170,7 +3159,7 @@ body.account-info-page {
   width: 100%;
   border-collapse: collapse;
   background-color: #f9f9f9; /* Light background */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   border-radius: 8px;
   overflow: hidden;
@@ -3178,7 +3167,7 @@ body.account-info-page {
 
 /* Header Styling (Removed hover effect) */
 #purok-pages .purok-table thead {
-  background-color: #4A90E2; /* Professional blue color */
+  background-color: #4a90e2; /* Professional blue color */
   color: #ffffff;
   text-align: left;
   font-size: 16px;
@@ -3192,7 +3181,8 @@ body.account-info-page {
 }
 
 /* Table Cells */
-#purok-pages .purok-table th, #purok-pages .purok-table td {
+#purok-pages .purok-table th,
+#purok-pages .purok-table td {
   padding: 15px;
   text-align: left;
   font-size: 14px;
@@ -3214,12 +3204,12 @@ body.account-info-page {
 }
 
 #purok-pages .purok-table td:nth-child(3) {
-  border-left: 1px solid #ddd;  /* Border between Purok Name and Resident */
+  border-left: 1px solid #ddd; /* Border between Purok Name and Resident */
   border-right: 1px solid #ddd; /* Border between Resident and Action */
 }
 
 #purok-pages .purok-table td:nth-child(4) {
-  border-left: 1px solid #ddd;  /* Border between Resident and Action */
+  border-left: 1px solid #ddd; /* Border between Resident and Action */
 }
 
 /* Table Row Hover Effect (only on row, not the Purok Name) */
@@ -3231,11 +3221,11 @@ body.account-info-page {
 /* Action Link (View Details) */
 #purok-pages .purok-table td a.view-details {
   text-decoration: none;
-  color: #4A90E2; /* Blue color for links */
+  color: #4a90e2; /* Blue color for links */
   font-weight: 600;
   padding: 8px 16px;
   border-radius: 4px;
-  border: 1px solid #4A90E2;
+  border: 1px solid #4a90e2;
   background-color: #ffffff;
   transition: all 0.3s ease;
 }
@@ -3243,31 +3233,31 @@ body.account-info-page {
 /* Action Link Hover Effect */
 #purok-pages .purok-table td a.view-details:hover {
   color: #ffffff;
-  background-color: #4A90E2;
-  border-color: #4A90E2;
+  background-color: #4a90e2;
+  border-color: #4a90e2;
 }
 
 /* Responsive Design for Mobile Devices */
 @media (max-width: 768px) {
   #purok-pages .purok-table th,
   #purok-pages .purok-table td {
-      font-size: 13px;
-      padding: 12px; /* Adjust padding for smaller screens */
+    font-size: 13px;
+    padding: 12px; /* Adjust padding for smaller screens */
   }
 
   #purok-pages .purok-table td a.view-details {
-      padding: 6px 12px;
+    padding: 6px 12px;
   }
 
   /* Adjust column layout for smaller screens */
   #purok-pages .purok-table td.numbering {
-      width: 30px; /* Make numbering column smaller */
+    width: 30px; /* Make numbering column smaller */
   }
 
   #purok-pages .purok-table td:nth-child(2),
   #purok-pages .purok-table td:nth-child(3),
   #purok-pages .purok-table td:nth-child(4) {
-      font-size: 12px; /* Reduce font size in smaller screens */
+    font-size: 12px; /* Reduce font size in smaller screens */
   }
 }
 
@@ -3275,24 +3265,23 @@ body.account-info-page {
 @media (max-width: 480px) {
   #purok-pages .purok-table th,
   #purok-pages .purok-table td {
-      font-size: 12px;
-      padding: 10px; /* Reduce padding for very small screens */
+    font-size: 12px;
+    padding: 10px; /* Reduce padding for very small screens */
   }
 
   #purok-pages .purok-table td a.view-details {
-      padding: 6px 10px;
-      font-size: 12px; /* Smaller font for mobile */
+    padding: 6px 10px;
+    font-size: 12px; /* Smaller font for mobile */
   }
 
   /* Adjust layout for mobile view */
   #purok-pages .purok-table td.numbering {
-      width: 25px; /* Even smaller numbering column */
+    width: 25px; /* Even smaller numbering column */
   }
 
   #purok-pages .purok-table td:nth-child(2),
   #purok-pages .purok-table td:nth-child(3),
   #purok-pages .purok-table td:nth-child(4) {
-      font-size: 11px; /* Further reduce font size */
+    font-size: 11px; /* Further reduce font size */
   }
 }
-

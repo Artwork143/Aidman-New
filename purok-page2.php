@@ -68,7 +68,7 @@
             </div>
             <nav>
                 <ul>
-                    <li class="nav-item active"><a href="admin-dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="admin-dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                     <li><a href="ranking_resident.php"><i class="fas fa-chart-line"></i> Aid Priority Ranking</a></li>
                     <li><a href="inventory-dashboard.php"><i class="fas fa-warehouse"></i> Inventory System</a></li>
                     <li class="arrow-dropdown">
@@ -81,7 +81,9 @@
                         </div>
                     </li>
                     <li><a href="resident_lists.php"><i class="fas fa-calendar-alt fa-lg mr-2"></i> Resident List</a></li>
-                    <li><a href="assistance-scheduling.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Assistance Scheduling</a></li>
+                    <li class="nav-item active"><a href="purok-page2.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Purok List</a></li>
+                    <li><a href="calamity_list.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Calamity List</a></li>
+
                 </ul>
             </nav>
         </aside>
@@ -154,24 +156,24 @@
                     </div>
                 </div>
             </header>
-            
+
             <?php
-// Fetch ENUM values for Purok dynamically
-$sql = "SHOW COLUMNS FROM resident_list WHERE Field = 'purok'";
-$result = $conn->query($sql);
+            // Fetch ENUM values for Purok dynamically
+            $sql = "SHOW COLUMNS FROM resident_list WHERE Field = 'purok'";
+            $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    // Extract ENUM values
-    $enumList = $row['Type']; // e.g., "enum('Value1','Value2',...)"
-    preg_match_all("/'([^']+)'/", $enumList, $matches); // Extract values using regex
-    $purokEnumValues = $matches[1]; // Get the list of ENUM values
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                // Extract ENUM values
+                $enumList = $row['Type']; // e.g., "enum('Value1','Value2',...)"
+                preg_match_all("/'([^']+)'/", $enumList, $matches); // Extract values using regex
+                $purokEnumValues = $matches[1]; // Get the list of ENUM values
 
-    // Sort the Purok values alphabetically
-    sort($purokEnumValues); // This will sort the array in ascending order (alphabetically)
+                // Sort the Purok values alphabetically
+                sort($purokEnumValues); // This will sort the array in ascending order (alphabetically)
 
-    // Start Table
-    echo "<div id='purok-pages'>
+                // Start Table
+                echo "<div id='purok-pages'>
             <table class='purok-table'>
                 <thead>
                     <tr>
@@ -183,16 +185,16 @@ if ($result->num_rows > 0) {
                 </thead>
                 <tbody>";
 
-    // Loop through each purok and display it in a table row with a number
-    $counter = 1;
-    foreach ($purokEnumValues as $purok) {
-        // Fetch the count of residents in the current purok
-        $residentCountQuery = "SELECT COUNT(*) AS resident_count FROM resident_list WHERE purok = '$purok'";
-        $residentCountResult = $conn->query($residentCountQuery);
-        $residentCountRow = $residentCountResult->fetch_assoc();
-        $residentCount = $residentCountRow['resident_count'];
+                // Loop through each purok and display it in a table row with a number
+                $counter = 1;
+                foreach ($purokEnumValues as $purok) {
+                    // Fetch the count of residents in the current purok
+                    $residentCountQuery = "SELECT COUNT(*) AS resident_count FROM resident_list WHERE purok = '$purok'";
+                    $residentCountResult = $conn->query($residentCountQuery);
+                    $residentCountRow = $residentCountResult->fetch_assoc();
+                    $residentCount = $residentCountRow['resident_count'];
 
-        echo "
+                    echo "
         <tr>
             <td class='numbering'>$counter</td>
             <td>$purok</td>
@@ -200,15 +202,15 @@ if ($result->num_rows > 0) {
             <td class='action-column'><a class='view-details' href='view-purok.php?purok=" . urlencode($purok) . "'>View Details</a></td>
         </tr>
         ";
-        $counter++;
-    }
+                    $counter++;
+                }
 
-    // End Table
-    echo "</tbody></table></div>";
-} else {
-    echo "<p>No purok information found in the database.</p>";
-}
-?>
+                // End Table
+                echo "</tbody></table></div>";
+            } else {
+                echo "<p>No purok information found in the database.</p>";
+            }
+            ?>
 
 
 

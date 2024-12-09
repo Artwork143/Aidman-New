@@ -142,8 +142,8 @@ if ($conn->connect_error) {
             </div>
             <nav>
                 <ul>
-                    <li><a href="admin-dashboard.php"><i class="fas fa-tachometer-alt"></i></i> Dashboard</a></li>
-                    <li><a href="aid-dashboard.php"><i class="fas fa-chart-line"></i> Aid Priority Ranking</a></li>
+                    <li ><a href="admin-dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="ranking_resident.php"><i class="fas fa-chart-line"></i> Aid Priority Ranking</a></li>
                     <li class="nav-item active"><a href="inventory-dashboard.php"><i class="fas fa-warehouse"></i> Inventory System</a></li>
                     <li class="arrow-dropdown">
                         <div class="arrow-dropdown-toggle" id="account-control-link">
@@ -154,8 +154,10 @@ if ($conn->connect_error) {
                             <a href="account-management.php"><i class="fa-solid fa-file-invoice"></i> Account Management</a>
                         </div>
                     </li>
-                    <li><a href="event-control-system.php"><i class="fas fa-calendar-alt fa-lg mr-2"></i> Event Control System</a></li>
-                    <li><a href="assistance-scheduling.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Assistance Scheduling</a></li>
+                    <li><a href="resident_lists.php"><i class="fas fa-calendar-alt fa-lg mr-2"></i> Resident List</a></li>
+                    <li><a href="purok-page2.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Purok List</a></li>
+                    <li><a href="calamity_list.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Calamity List</a></li>
+
                 </ul>
             </nav>
         </aside>
@@ -426,7 +428,7 @@ if ($conn->connect_error) {
             });
         });
 
-        
+
         // Modal Script
         const addSuppliesBtn = document.getElementById('inven-add-supplies-btn');
         const addSuppliesModal = document.getElementById('inven-add-supplies-modal');

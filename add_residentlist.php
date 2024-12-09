@@ -2,69 +2,87 @@
 include 'db_connect.php'; // Include your database connection file
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Collect form data
-    $firstname = $_POST['firstname'];
-    $middlename = $_POST['middlename'];
-    $lastname = $_POST['lastname'];
-    $suffix = $_POST['suffix'];
-    $gender = $_POST['gender'];
-    $age = $_POST['age'];
-    $marital_status = $_POST['marital_status'];  // Collect marital status
-    $purok = $_POST['purok'];
+    try {
+        // Collect and sanitize form data
+        $firstname = mysqli_real_escape_string($conn, trim($_POST['firstname']));
+        $middlename = mysqli_real_escape_string($conn, trim($_POST['middlename']));
+        $lastname = mysqli_real_escape_string($conn, trim($_POST['lastname']));
+        $suffix = mysqli_real_escape_string($conn, trim($_POST['suffix']));
+        $gender = mysqli_real_escape_string($conn, trim($_POST['gender']));
+        $age = intval($_POST['age']); // Ensure age is an integer
+        $marital_status = mysqli_real_escape_string($conn, trim($_POST['marital_status']));
+        $purok = mysqli_real_escape_string($conn, trim($_POST['purok']));
 
-    // Check for duplicate resident (same name and gender)
-    $stmt = $conn->prepare("SELECT * FROM resident_list WHERE firstname = ? AND lastname = ? AND gender = ?");
-    $stmt->bind_param("sss", $firstname, $lastname, $gender);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        // Input validation
+        if (empty($firstname) || empty($lastname) || empty($gender)) {
+            throw new Exception("Required fields are missing.");
+        }
 
-    if ($result->num_rows > 0) {
-        // Duplicate found, show error message
-        echo "<script>
-            window.onload = function() {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Resident Already Exists',
-                    text: 'This resident is already in the list.',
-                    confirmButtonColor: '#d33',
-                    timer: 3000,
-                    showConfirmButton: true
-                });
-            };
-        </script>";
-    } else {
-        // If no duplicate, insert the data
-        $stmt = $conn->prepare("INSERT INTO resident_list (firstname, middlename, lastname, suffix, gender, age, marital_status, purok) 
-                               VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssis", $firstname, $middlename, $lastname, $suffix, $gender, $age, $marital_status, $purok);
+        // Validate marital_status against allowed enum values
+        $valid_marital_statuses = ['single', 'married', 'widowed', 'divorce'];
+        if (!in_array(strtolower($marital_status), $valid_marital_statuses)) {
+            throw new Exception("Invalid marital status value.");
+        }
 
-        if ($stmt->execute()) {
+        // Check for duplicate resident (same name and gender)
+        $checkSql = "SELECT * FROM resident_list WHERE firstname = '$firstname' AND lastname = '$lastname' AND gender = '$gender'";
+        $checkResult = $conn->query($checkSql);
+
+        if ($checkResult && $checkResult->num_rows > 0) {
+            // Duplicate found
             echo "<script>
                 window.onload = function() {
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Resident Added Successfully',
-                        text: 'The resident has been added to the list.',
-                        timer: 2000,
-                        showConfirmButton: false
-                    }).then(() => {
-                        window.location.href = 'resident_lists.php';
+                        icon: 'warning',
+                        title: 'Resident Already Exists',
+                        text: 'This resident is already in the list.',
+                        confirmButtonColor: '#d33',
+                        timer: 3000,
+                        showConfirmButton: true
                     });
                 };
             </script>";
         } else {
-            // Log SQL error for debugging
-            echo "<script>
-                window.onload = function() {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to add resident: " . $stmt->error . "',
-                    });
-                };
-            </script>";
+            // If no duplicate, insert the data
+            $insertSql = "INSERT INTO resident_list (firstname, middlename, lastname, suffix, gender, age, marital_status, purok) 
+                          VALUES ('$firstname', '$middlename', '$lastname', '$suffix', '$gender', $age, '$marital_status', '$purok')";
+
+            if ($conn->query($insertSql)) {
+                echo "<script>
+                    window.onload = function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Resident Added Successfully',
+                            text: 'The resident has been added to the list.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = 'resident_lists.php';
+                        });
+                    };
+                </script>";
+            } else {
+                throw new Exception("Failed to add resident: " . $conn->error);
+            }
         }
-        $stmt->close();
+    } catch (Exception $e) {
+        // Log error for debugging (optional: store in a log file)
+        error_log($e->getMessage());
+
+        // Display a user-friendly error message
+        echo "<script>
+            window.onload = function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while processing your request.',
+                    confirmButtonColor: '#d33'
+                });
+            };
+        </script>";
+    } finally {
+        // Ensure connection is closed
+        if (isset($conn)) $conn->close();
     }
 }
 ?>
@@ -240,9 +258,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div>
                     <label for="marital_status">Marital Status:</label>
                     <select id="marital_status" name="marital_status" required>
-                        <option value="Single">Single</option>
-                        <option value="Married">Married</option>
-                        <option value="Divorce">Divorce</option>
+                        <option value="single">Single</option>
+                        <option value="married">Married</option>
+                        <option value="widowed">Widowed</option>
+                        <option value="divorce">Divorce</option>
                     </select>
                 </div>
                 <div>

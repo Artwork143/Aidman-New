@@ -3,16 +3,14 @@ include 'db_connect.php'; // Ensure your database connection file is included
 
 // Check if the resident ID is passed
 if (isset($_GET['id'])) {
-    $resident_id = $_GET['id'];
-    
+    $resident_id = intval($_GET['id']); // Convert to integer to prevent SQL injection
+
     // Fetch the resident details based on ID
-    $stmt = $conn->prepare("SELECT * FROM resident_list WHERE id = ?");
-    $stmt->bind_param("i", $resident_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    // If resident found, fetch data into variables
-    if ($result->num_rows > 0) {
+    $query = "SELECT * FROM resident_list WHERE id = $resident_id";
+    $result = $conn->query($query);
+
+    if ($result && $result->num_rows > 0) {
+        // Fetch resident data into variables
         $resident = $result->fetch_assoc();
         $firstname = $resident['firstname'];
         $middlename = $resident['middlename'];
@@ -30,20 +28,31 @@ if (isset($_GET['id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Collect form data
-    $firstname = $_POST['firstname'];
-    $middlename = $_POST['middlename'];
-    $lastname = $_POST['lastname'];
-    $suffix = $_POST['suffix'];
-    $gender = $_POST['gender'];
-    $age = $_POST['age'];
-    $marital_status = $_POST['marital_status'];
-    $purok = $_POST['purok'];
+    $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
+    $middlename = mysqli_real_escape_string($conn, $_POST['middlename']);
+    $lastname = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $suffix = mysqli_real_escape_string($conn, $_POST['suffix']);
+    $gender = mysqli_real_escape_string($conn, $_POST['gender']);
+    $age = intval($_POST['age']); // Ensure age is an integer
+    $marital_status = mysqli_real_escape_string($conn, $_POST['marital_status']);
+    $purok = mysqli_real_escape_string($conn, $_POST['purok']);
 
     // Update resident details
-    $stmt = $conn->prepare("UPDATE resident_list SET firstname = ?, middlename = ?, lastname = ?, suffix = ?, gender = ?, age = ?, marital_status = ?, purok = ? WHERE id = ?");
-    $stmt->bind_param("ssssssisi", $firstname, $middlename, $lastname, $suffix, $gender, $age, $marital_status, $purok, $resident_id);
+    $update_query = "
+        UPDATE resident_list 
+        SET 
+            firstname = '$firstname', 
+            middlename = '$middlename', 
+            lastname = '$lastname', 
+            suffix = '$suffix', 
+            gender = '$gender', 
+            age = $age, 
+            marital_status = '$marital_status', 
+            purok = '$purok' 
+        WHERE id = $resident_id
+    ";
 
-    if ($stmt->execute()) {
+    if ($conn->query($update_query)) {
         echo "<script>
             window.onload = function() {
                 Swal.fire({
@@ -68,12 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             };
         </script>";
     }
-    $stmt->close();
 }
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,14 +95,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradient background */
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            /* Gradient background */
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
+
         .form-container {
             background-color: #fff;
             border-radius: 12px;
@@ -101,35 +115,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             max-width: 450px;
             transition: transform 0.3s, box-shadow 0.3s;
         }
+
         .form-container:hover {
             transform: scale(1.03);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
+
         h1 {
             font-size: 36px;
             color: #09203f;
             text-align: center;
             margin-bottom: 25px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.3); /* Added text shadow */
-            animation: fadeIn 1.5s ease-in-out; /* Animation */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            /* Added text shadow */
+            animation: fadeIn 1.5s ease-in-out;
+            /* Animation */
         }
+
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(-50px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         label {
             font-size: 14px;
             color: #555;
             margin-bottom: 5px;
             display: block;
         }
+
         .input-group {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             margin-bottom: 20px;
         }
-        .input-group input, .input-group select {
+
+        .input-group input,
+        .input-group select {
             width: 100%;
             padding: 12px;
             border-radius: 8px;
@@ -137,20 +167,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 14px;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
-        .input-group input:focus, .input-group select:focus {
+
+        .input-group input:focus,
+        .input-group select:focus {
             border-color: #007bff;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
+
         .input-group input[type="number"] {
             -moz-appearance: textfield;
         }
+
         .input-group input#suffix {
-            color: #aaa; /* Grey color */
+            color: #aaa;
+            /* Grey color */
         }
+
         .input-group input#suffix::placeholder {
             color: #aaa;
             font-style: italic;
         }
+
         .submit-button {
             width: 100%;
             padding: 12px;
@@ -162,9 +199,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .submit-button:hover {
             background-color: #218838;
         }
+
         .cancel-button {
             display: block;
             text-align: center;
@@ -173,14 +212,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 14px;
             text-decoration: none;
         }
+
         .cancel-button:hover {
             color: #0056b3;
         }
+
         @media (max-width: 600px) {
             .form-container {
                 width: 90%;
                 padding: 20px;
             }
+
             .input-group {
                 grid-template-columns: 1fr;
             }
@@ -188,6 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
     <div class="form-container">
         <h1>Edit Resident</h1>
@@ -202,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" id="middlename" name="middlename" value="<?php echo $middlename; ?>" required>
                 </div>
             </div>
-            
+
             <div class="input-group">
                 <div>
                     <label for="lastname">Last Name:</label>
@@ -235,6 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <select id="marital_status" name="marital_status" required>
                         <option value="Single" <?php if ($marital_status == 'Single') echo 'selected'; ?>>Single</option>
                         <option value="Married" <?php if ($marital_status == 'Married') echo 'selected'; ?>>Married</option>
+                        <option value="Widowed" <?php if ($marital_status == 'Widowed') echo 'selected'; ?>>Widowed</option>
                         <option value="Divorce" <?php if ($marital_status == 'Divorce') echo 'selected'; ?>>Divorce</option>
                     </select>
                 </div>
@@ -256,5 +300,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 </body>
-</html>
 
+</html>

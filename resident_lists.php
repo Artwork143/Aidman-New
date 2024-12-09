@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,16 +20,20 @@
             font-size: 16px;
             padding: 20px;
         }
+
         .swal2-title {
             font-size: 20px;
             font-weight: bold;
         }
-        .swal2-confirm, .swal2-cancel {
+
+        .swal2-confirm,
+        .swal2-cancel {
             border-radius: 5px;
             padding: 10px 20px;
         }
     </style>
 </head>
+
 <body>
 
     <div class="container">
@@ -41,12 +46,21 @@
             <nav>
                 <ul>
                     <li><a href="admin-dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="aid-dashboard.php"><i class="fas fa-chart-line"></i> Aid Priority Ranking</a></li>
+                    <li><a href="ranking_resident.php"><i class="fas fa-chart-line"></i> Aid Priority Ranking</a></li>
                     <li><a href="inventory-dashboard.php"><i class="fas fa-warehouse"></i> Inventory System</a></li>
-                    <li><a href="resident_lists.php"><i class="fas fa-warehouse"></i> Resident Information</a></li>
-                    <li><a href="account_control.php"><i class="fas fa-user-cog"></i> Account Control</a></li>
-                    <li><a href="event-control-system.php"><i class="fas fa-calendar-alt"></i> Event Control</a></li>
-                    <li><a href="assistance-scheduling.php"><i class="fas fa-calendar-check"></i> Assistance Scheduling</a></li>
+                    <li class="arrow-dropdown">
+                        <div class="arrow-dropdown-toggle" id="account-control-link">
+                            <a href="account_control.php" style="flex-grow: 1;"><i class="fas fa-user-cog mr-2"></i> Account Control Panel Register</a>
+                            <i class="fas fa-chevron-down arrow-toggle"></i>
+                        </div>
+                        <div class="arrow-dropdown-content">
+                            <a href="account-management.php"><i class="fa-solid fa-file-invoice"></i> Account Management</a>
+                        </div>
+                    </li>
+                    <li class="nav-item active"><a href="resident_lists.php"><i class="fas fa-calendar-alt fa-lg mr-2"></i> Resident List</a></li>
+                    <li><a href="purok-page2.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Purok List</a></li>
+                    <li><a href="calamity_list.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Calamity List</a></li>
+
                 </ul>
             </nav>
         </aside>
@@ -69,12 +83,12 @@
                             <a href="login.php" class="dropdown-item">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span>Logout</span>
-                            </a>                            
+                            </a>
                         </div>
                     </div>
                 </div>
             </header>
-            
+
             <?php
             $servername = "localhost";
             $username = "root";
@@ -137,50 +151,50 @@
                 </div>
 
                 <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>First Name</th>
-                        <th>Middle Name</th>
-                        <th>Last Name</th>
-                        <th>Suffix</th> <!-- Always show this column -->
-                        <th>Gender</th>
-                        <th>Age</th>
-                        <th>Marital Status</th>
-                        <th>Purok</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                                <tbody>
-                    <?php
-                    $count = $offset + 1;
-                    if ($result->num_rows == 0): ?>
+                    <thead>
                         <tr>
-                            <td colspan="10" style="text-align: center;">No results found for '<?php echo htmlspecialchars($search); ?>'</td>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Suffix</th> <!-- Always show this column -->
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>Marital Status</th>
+                            <th>Purok</th>
+                            <th>Actions</th>
                         </tr>
-                    <?php endif;
-                    while ($user = $result->fetch_assoc()): ?>
-                        <tr>
-                            <td data-label="#"><?php echo $count++; ?></td>
-                            <td data-label="First Name"><?php echo htmlspecialchars($user['firstname']); ?></td>
-                            <td data-label="Middle Name"><?php echo htmlspecialchars($user['middlename']); ?></td>
-                            <td data-label="Last Name"><?php echo htmlspecialchars($user['lastname']); ?></td>
-                            <td data-label="Suffix" style="color: <?php echo empty($user['suffix']) ? 'grey' : 'black'; ?>">
-                                <?php echo empty($user['suffix']) ? 'None' : htmlspecialchars($user['suffix']); ?>
-                            </td>
-                            <td data-label="Gender"><?php echo htmlspecialchars($user['gender']); ?></td>
-                            <td data-label="Age"><?php echo htmlspecialchars($user['age']); ?></td>
-                            <td data-label="Marital Status"><?php echo htmlspecialchars($user['marital_status']); ?></td>
-                            <td data-label="Purok"><?php echo htmlspecialchars($user['purok']); ?></td>
-                            <td data-label="Actions">
-                                <div class="action-buttons">
-                                    <a href="#" class="edit-button" onclick="confirmEdit(<?php echo $user['id']; ?>)">Edit</a>
-                                    <a href="javascript:void(0);" class="delete-button" onclick="confirmDelete(<?php echo $user['id']; ?>)">Delete</a>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $count = $offset + 1;
+                        if ($result->num_rows == 0): ?>
+                            <tr>
+                                <td colspan="10" style="text-align: center;">No results found for '<?php echo htmlspecialchars($search); ?>'</td>
+                            </tr>
+                        <?php endif;
+                        while ($user = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td data-label="#"><?php echo $count++; ?></td>
+                                <td data-label="First Name"><?php echo htmlspecialchars($user['firstname']); ?></td>
+                                <td data-label="Middle Name"><?php echo htmlspecialchars($user['middlename']); ?></td>
+                                <td data-label="Last Name"><?php echo htmlspecialchars($user['lastname']); ?></td>
+                                <td data-label="Suffix" style="color: <?php echo empty($user['suffix']) ? 'grey' : 'black'; ?>">
+                                    <?php echo empty($user['suffix']) ? 'None' : htmlspecialchars($user['suffix']); ?>
+                                </td>
+                                <td data-label="Gender"><?php echo htmlspecialchars($user['gender']); ?></td>
+                                <td data-label="Age"><?php echo htmlspecialchars($user['age']); ?></td>
+                                <td data-label="Marital Status"><?php echo htmlspecialchars($user['marital_status']); ?></td>
+                                <td data-label="Purok"><?php echo htmlspecialchars($user['purok']); ?></td>
+                                <td data-label="Actions">
+                                    <div class="action-buttons">
+                                        <a href="#" class="edit-button" onclick="confirmEdit(<?php echo $user['id']; ?>)">Edit</a>
+                                        <a href="javascript:void(0);" class="delete-button" onclick="confirmDelete(<?php echo $user['id']; ?>)">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
 
                 </table>
 
@@ -219,23 +233,23 @@
         }
 
         function confirmDelete(id) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'You are about to delete this resident record.',
-        icon: 'error',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Redirect to the delete script with the resident ID
-            window.location.href = 'delete_resident.php?id=' + id;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to delete this resident record.',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect to the delete script with the resident ID
+                    window.location.href = 'delete_resident.php?id=' + id;
+                }
+            });
         }
-    });
-}
-
     </script>
 
 </body>
+
 </html>

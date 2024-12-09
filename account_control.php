@@ -10,7 +10,7 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="font-awesome/css/all.min.css">
-    </head>
+</head>
 
 <body>
 
@@ -38,8 +38,9 @@
                             <a href="account-management.php"><i class="fa-solid fa-file-invoice"></i> Account Management</a>
                         </div>
                     </li>
-                    <li><a href="event-control-system.php"><i class="fas fa-calendar-alt"></i> Event Control System</a></li>
-                    <li><a href="assistance-scheduling.php"><i class="fas fa-calendar-check"></i> Assistance Scheduling</a></li>
+                    <li><a href="resident_lists.php"><i class="fas fa-calendar-alt fa-lg mr-2"></i> Resident List</a></li>
+                    <li><a href="purok-page2.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Purok List</a></li>
+                    <li><a href="calamity_list.php"><i class="fas fa-calendar-check fa-lg mr-2"></i> Calamity List</a></li>
                 </ul>
 
             </nav>

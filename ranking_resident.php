@@ -11,82 +11,101 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/admin-dashboard.css"> <!-- Updated link -->
     <link rel="stylesheet" href="font-awesome/css/all.min.css">
+
     <style>
-        <!-- Add some styles for the form and layout -->
-<style>
-    .card-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        height: 80vh;
-    }
+        .suggestions {
+            position: absolute;
+            background-color: #0A97B0;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+            color: white;
+        }
 
-    .card {
-        width: 60%;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+        .suggestion-item {
+            padding: 10px 50px;
+            cursor: pointer;
+        }
 
-    .card h3 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
+        .suggestion-item:hover {
+            background-color: #7AB2D3;
+            color: black;
+        }
 
-    .form-group {
-        margin-bottom: 15px;
-    }
+        .card {
+            width: 60%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-    .form-group label {
-        font-weight: bold;
-        margin-bottom: 5px;
-        display: block;
-    }
+        .card h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    .form-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 14px;
-    }
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-    .divider {
-        margin: 20px 0;
-        border: 1px solid #ddd;
-    }
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
 
-    .data-analytics {
-        margin-top: 20px;
-    }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
 
-    .data-analytics h4 {
-        margin-bottom: 15px;
-        font-size: 16px;
-        color: #333;
-    }
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
 
-    .data-analytics .form-group {
-        margin-bottom: 10px;
-    }
+        .divider {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+        }
 
-    .btn {
-        display: block;
-        width: 100%;
-        padding: 12px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+        .data-analytics {
+            margin-top: 20px;
+        }
 
-    .btn:hover {
-        background-color: #45a049;
-    }
+        .data-analytics h4 {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .data-analytics .form-group {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
 
         .notification-bell {
             position: relative;
@@ -132,6 +151,19 @@
         .dropdown-item:hover {
             background-color: #f1f1f1;
         }
+
+        .form-group-row {
+            display: flex;
+            gap: 20px;
+            /* Adjust spacing between dropdowns */
+            align-items: center;
+            /* Vertically align labels and dropdowns */
+        }
+
+        .form-group-row .form-group {
+            flex: 1;
+            /* Ensures equal width for both dropdowns */
+        }
     </style>
 </head>
 
@@ -144,8 +176,8 @@
             </div>
             <nav>
                 <ul>
-                    <li class="nav-item active"><a href="admin-dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="ranking_resident.php"><i class="fas fa-chart-line"></i> Aid Priority Ranking</a></li>
+                    <li><a href="admin-dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li class="nav-item active"><a href="ranking_resident.php"><i class="fas fa-chart-line"></i> Aid Priority Ranking</a></li>
                     <li><a href="inventory-dashboard.php"><i class="fas fa-warehouse"></i> Inventory System</a></li>
                     <li class="arrow-dropdown">
                         <div class="arrow-dropdown-toggle" id="account-control-link">
@@ -232,77 +264,131 @@
                     </div>
                 </div>
             </header>
-            
-                          <!-- "PUT IT HERE" Section -->
-<section class="card-container">
-    <div class="card">
-        <h3>Register Ranking For Resident</h3>
-        <form action="process_ranking.php" method="POST">
-            <!-- Calamity Input -->
-            <div class="form-group">
-                <label for="calamity">Calamity:</label>
-                <input type="text" id="calamity" name="calamity" placeholder="Enter Calamity" required>
-            </div>
 
-            <!-- Resident Name Input -->
-            <div class="form-group">
-                <label for="resident-name">Resident Name:</label>
-                <input type="text" id="resident-name" name="resident_name" placeholder="Enter Resident Name" required>
-            </div>
+            <!-- "PUT IT HERE" Section -->
+            <section class="card-container">
+                <div class="card">
+                    <h3>Register Ranking For Resident</h3>
+                    <form action="process_ranking.php" method="POST">
+                        <!-- Calamity Dropdown -->
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="type-of-calamity">Type of Calamity:</label>
+                                <select id="type-of-calamity" name="type_of_calamity" required>
+                                    <option value="">-- Select Calamity Type --</option>
+                                    <option value="Typhoon">Typhoon</option>
+                                    <option value="Flood">Flood</option>
+                                    <option value="Earthquake">Earthquake</option>
+                                    <option value="Fire Incident">Fire Incident</option>
+                                </select>
+                            </div>
 
-            <!-- Purok Input -->
-            <div class="form-group">
-                <label for="purok">Purok:</label>
-                <input type="text" id="purok" name="purok" placeholder="Enter Purok" required>
-            </div>
+                            <div class="form-group">
+                                <label for="calamity">Calamity:</label>
+                                <select id="calamity" name="calamity" required>
+                                    <option value="">-- Select a Calamity --</option>
+                                </select>
+                            </div>
 
-            <!-- Mobile Number Input -->
-            <div class="form-group">
-                <label for="mobile-number">Mobile Number:</label>
-                <input type="text" id="mobile-number" name="mobile_number" placeholder="Enter Mobile Number" required>
-            </div>
+                        </div>
 
-            <!-- Divider -->
-            <hr class="divider">
+                        <!-- Resident Name Input -->
+                        <div class="form-group">
+                            <label for="resident-name">Resident Name:</label>
+                            <input type="text" id="resident-name" name="resident_name" placeholder="Search Resident Name" autocomplete="off" required>
+                            <div id="resident-suggestions" class="suggestions"></div>
+                        </div>
 
-            <!-- Data Analytics Section -->
-            <div class="data-analytics">
-                <h4>Data Analytics Using Criteria</h4>
-                <div class="form-group">
-                    <label for="damage-severity">Damage Severity (30%):</label>
-                    <input type="number" id="damage-severity" name="damage_severity" min="0" max="100" placeholder="Enter Damage Severity" required>
+                        <!-- Purok and Mobile Number Fields -->
+                        <div class="form-group">
+                            <label for="purok">Purok:</label>
+                            <input type="text" id="purok" name="purok" placeholder="Auto-populated" readonly required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mobile-number">Mobile Number:</label>
+                            <input type="number" id="mobile-number" name="mobile_number" placeholder="Enter Mobile Number" required>
+                        </div>
+
+                        <!-- Divider -->
+                        <hr class="divider">
+
+                        <!-- Data Analytics Section -->
+                        <div class="data-analytics">
+                            <h4>Data Analytics Using Criteria</h4>
+                            <div class="form-group">
+                                <label for="damage-severity">Damage Severity (30%):</label>
+                                <input type="number" id="damage-severity" name="damage_severity" min="0" max="100" placeholder="Enter Damage Severity" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="occupants">Number of Occupants (20%):</label>
+                                <input type="number" id="occupants" name="occupants" min="0" placeholder="Enter Number of Occupants" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="vulnerability">Vulnerability (20%):</label>
+                                <input type="number" id="vulnerability" name="vulnerability" min="0" max="100" placeholder="Enter Vulnerability" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="income-level">Income Level (15%):</label>
+                                <input type="number" id="income-level" name="income_level" min="0" max="100" placeholder="Enter Income Level" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="special-needs">Special Needs (15%):</label>
+                                <input type="number" id="special-needs" name="special_needs" min="0" max="100" placeholder="Enter Special Needs" required>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn">Submit</button>
+                    </form>
                 </div>
-
-                <div class="form-group">
-                    <label for="occupants">Number of Occupants (20%):</label>
-                    <input type="number" id="occupants" name="occupants" min="0" placeholder="Enter Number of Occupants" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="vulnerability">Vulnerability (20%):</label>
-                    <input type="number" id="vulnerability" name="vulnerability" min="0" max="100" placeholder="Enter Vulnerability" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="income-level">Income Level (15%):</label>
-                    <input type="number" id="income-level" name="income_level" min="0" max="100" placeholder="Enter Income Level" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="special-needs">Special Needs (15%):</label>
-                    <input type="number" id="special-needs" name="special_needs" min="0" max="100" placeholder="Enter Special Needs" required>
-                </div>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn">Submit</button>
-        </form>
-    </div>
-</section>
+            </section>
         </main>
     </div>
     <script src="js/admin-dashboard.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const typeOfCalamityDropdown = document.getElementById('type-of-calamity');
+            const calamityDropdown = document.getElementById('calamity');
+
+            // Fetch calamity data from the server
+            const fetchCalamityData = async (type) => {
+                try {
+                    const response = await fetch(`get_calamities.php?type=${encodeURIComponent(type)}`);
+                    const calamities = await response.json();
+                    return calamities;
+                } catch (error) {
+                    console.error('Error fetching calamity data:', error);
+                    return [];
+                }
+            };
+
+            // Update calamity dropdown based on selected type
+            typeOfCalamityDropdown.addEventListener('change', async function() {
+                const selectedType = typeOfCalamityDropdown.value;
+                calamityDropdown.innerHTML = '<option value="">-- Select a Calamity --</option>';
+
+                if (selectedType) {
+                    const calamities = await fetchCalamityData(selectedType);
+
+                    if (calamities.length > 0) {
+                        calamities.forEach(calamity => {
+                            const option = document.createElement('option');
+                            option.value = calamity.name;
+                            option.textContent = calamity.name;
+                            calamityDropdown.appendChild(option);
+                        });
+                    } else {
+                        calamityDropdown.innerHTML = '<option value="">No calamities available</option>';
+                    }
+                }
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             // Notification Dropdown
             const notificationBell = document.getElementById('notification-bell');
@@ -377,6 +463,74 @@
             window.addEventListener('click', (event) => {
                 if (event.target === modal) {
                     modal.style.display = 'none'; // Hide the modal
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const residentInput = document.getElementById('resident-name');
+            const suggestionsDiv = document.getElementById('resident-suggestions');
+            const purokInput = document.getElementById('purok');
+            const calamitySelect = document.getElementById('calamity'); // Assuming there's a calamity dropdown
+
+            // Fetch resident suggestions as user types
+            residentInput.addEventListener('input', function() {
+                const query = residentInput.value.trim();
+
+                if (query.length < 2) {
+                    suggestionsDiv.innerHTML = ''; // Clear suggestions for short queries
+                    return;
+                }
+
+                fetch(`search_resident.php?query=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        suggestionsDiv.innerHTML = ''; // Clear previous suggestions
+                        if (data.length === 0) {
+                            suggestionsDiv.innerHTML = '<p style="color: white; margin:10px 5px;">No residents found</p>';
+                        } else {
+                            data.forEach(resident => {
+                                const suggestion = document.createElement('div');
+                                suggestion.classList.add('suggestion-item');
+                                suggestion.textContent = `${resident.firstname} ${resident.middlename} ${resident.lastname} ${resident.suffix}`;
+                                suggestion.dataset.purok = resident.purok;
+                                suggestion.dataset.residentId = resident.id; // Add resident ID for further checks
+
+                                suggestion.addEventListener('click', function() {
+                                    const calamity = calamitySelect.value; // Get the selected calamity
+
+                                    if (!calamity) {
+                                        alert('Please select a calamity first.');
+                                        return;
+                                    }
+
+                                    // Check if the resident is already listed in the ranking table
+                                    fetch(`check_resident_ranking.php?id=${resident.id}&calamity=${encodeURIComponent(calamity)}`)
+                                        .then(response => response.json())
+                                        .then(isListed => {
+                                            if (isListed) {
+                                                alert('This resident is already listed for the selected calamity.');
+                                            } else {
+                                                // Populate fields if not already listed
+                                                residentInput.value = `${resident.firstname} ${resident.middlename} ${resident.lastname} ${resident.suffix}`;
+                                                purokInput.value = resident.purok;
+                                                suggestionsDiv.innerHTML = ''; // Clear suggestions
+                                            }
+                                        })
+                                        .catch(error => console.error('Error checking resident ranking:', error));
+                                });
+
+                                suggestionsDiv.appendChild(suggestion);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error fetching residents:', error));
+            });
+
+            // Close suggestions when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!residentInput.contains(event.target) && !suggestionsDiv.contains(event.target)) {
+                    suggestionsDiv.innerHTML = '';
                 }
             });
         });
