@@ -11,14 +11,14 @@ if (!$calamity) {
 
 // Fetch rankings for the specified calamity
 $stmt = $conn->prepare("
-    SELECT 
+     SELECT 
         ranking_id,
         resident_name, 
         ranking_score 
     FROM 
         resident_ranking 
     WHERE 
-        calamity = ?
+        calamity = ? AND status = 'scheduled'
     ORDER BY 
         ranking_score DESC
 ");
@@ -118,6 +118,7 @@ $result = $stmt->get_result();
                         </td>
                     </tr>
                 <?php endwhile; ?>
+
             </tbody>
         </table>
     <?php else: ?>
@@ -152,94 +153,205 @@ $result = $stmt->get_result();
     <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    // Fetch existing supply distributions and update button states
-    fetch('fetch_supply_status.php')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const supplyStatuses = data.statuses;
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // Fetch existing supply distributions and update button states
+        //     fetch('fetch_supply_status.php')
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             if (data.success) {
+        //                 const supplyStatuses = data.statuses;
 
-                supplyStatuses.forEach(status => {
-                    const residentRow = document.getElementById('resident-' + status.ranking_id); // Correctly using ranking_id
+        //                 supplyStatuses.forEach(status => {
+        //                     const residentRow = document.getElementById('resident-' + status.ranking_id); // Correctly using ranking_id
 
-                    if (residentRow) {
-                        residentRow.querySelector('td:last-child').innerHTML = `
-                            <button class="btn btn-notify">Notify</button>
-                            <button class="btn btn-claimed">Claimed</button>
-                        `;
-                    }
-                });
-            }
-        })
-        .catch(error => console.error('Error fetching supply statuses:', error));
-});
+        //                     if (residentRow) {
+        //                         residentRow.querySelector('td:last-child').innerHTML = `
+        //                     <button class="btn btn-notify">Notify</button>
+        //                     <button class="btn btn-claimed" data-ranking-id="${status.ranking_id}">Claimed</button>
+        //                 `;
+        //                     }
+        //                 });
 
-// Show modal with resident's info
-function showGiveSupplyModal(rankingId, residentName) {
-    document.getElementById('modal').style.display = 'block';
-    document.getElementById('overlay').style.display = 'block';
-    document.getElementById('resident-id').value = rankingId;
-    document.getElementById('resident-name').textContent = residentName;
+        //                 // Attach event listeners to "Claimed" buttons
+        //                 document.querySelectorAll('.btn-claimed').forEach(button => {
+        //                     button.addEventListener('click', function() {
+        //                         const rankingId = this.getAttribute('data-ranking-id');
 
-    console.log(rankingId);
+        //                         // Send update request to the server
+        //                         fetch('update_supply_status.php', {
+        //                                 method: 'POST',
+        //                                 headers: {
+        //                                     'Content-Type': 'application/json',
+        //                                 },
+        //                                 body: JSON.stringify({
+        //                                     ranking_id: rankingId,
+        //                                     status: 'claimed'
+        //                                 }),
+        //                             })
+        //                             .then(response => response.json())
+        //                             .then(updateResponse => {
+        //                                 if (updateResponse.success) {
+        //                                     alert('Status updated to claimed!');
+        //                                     this.disabled = true; // Disable the button after claiming
+        //                                     this.textContent = 'Claimed';
+        //                                 } else {
+        //                                     alert('Failed to update status. Please try again.');
+        //                                 }
+        //                             })
+        //                             .catch(error => console.error('Error updating supply status:', error));
+        //                     });
+        //                 });
+        //             }
+        //         })
+        //         .catch(error => console.error('Error fetching supply statuses:', error));
+        // });
 
-    // Fetch inventory data
-    fetch('fetch_inventory.php')
-        .then(response => response.json())
-        .then(data => {
-            const inventoryList = document.getElementById('inventory-list');
-            inventoryList.innerHTML = ''; // Clear any existing inventory items
-            data.forEach(item => {
-                inventoryList.innerHTML += `
+
+        // Show modal with resident's info
+        function showGiveSupplyModal(rankingId, residentName) {
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('resident-id').value = rankingId;
+            document.getElementById('resident-name').textContent = residentName;
+
+            console.log("this is ranking_id: " + rankingId);
+
+            // Fetch inventory data
+            fetch('fetch_inventory.php')
+                .then(response => response.json())
+                .then(data => {
+                    const inventoryList = document.getElementById('inventory-list');
+                    inventoryList.innerHTML = ''; // Clear any existing inventory items
+                    data.forEach(item => {
+                        inventoryList.innerHTML += `
                     <div>
                         <label>${item.name} (Available: ${item.quantity})</label>
                         <input type="number" name="supply[${item.id}]" min="0" max="${item.quantity}">
                     </div>
                 `;
-            });
-        })
-        .catch(error => console.error('Error fetching inventory:', error));
-}
+                    });
+                })
+                .catch(error => console.error('Error fetching inventory:', error));
+        }
 
-// Close modal
-function closeModal() {
-    document.getElementById('modal').style.display = 'none';
-    document.getElementById('overlay').style.display = 'none';
-}
+        // Close modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
 
-// Submit supply form and update the button state
-document.getElementById('give-supply-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
+        document.getElementById('give-supply-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission behavior
 
-    const rankingId = formData.get('ranking_id'); // Use ranking_id, not resident_id
+            // Collect form data
+            const formData = new FormData(this);
 
-    console.log(rankingId);
-    fetch('submit_supply.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const residentRow = document.getElementById('resident-' + rankingId); // Using ranking_id here
-
-                if (residentRow) {
-                    residentRow.querySelector('td:last-child').innerHTML = `
-                        <button class="btn btn-notify">Notify</button>
-                        <button class="btn btn-claimed">Claimed</button>
-                    `;
+            // Convert FormData to JSON, including nested supplies
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key.startsWith("supply[")) {
+                    // Extract supply ID from the key (e.g., "supply[8]")
+                    const supplyId = key.match(/\[([^\]]+)\]/)[1]; // Extract number inside brackets
+                    if (!data.supplies) {
+                        data.supplies = {};
+                    }
+                    data.supplies[supplyId] = parseInt(value, 10); // Convert quantity to integer
+                } else {
+                    data[key] = value;
                 }
-                closeModal();
-                alert(data.message); // Optional feedback
-            } else {
-                alert('Error: ' + data.message);
-            }
-        })
-        .catch(error => console.error('Error submitting supply:', error));
-});
+            });
 
+            // Debugging: Log the final payload being sent
+            console.log('Data being sent:', JSON.stringify(data, null, 2));
+
+            // Send POST request to submit supply
+            fetch('submit_supply.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data), // Ensure data is serialized to JSON
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Supply submission successful!');
+                        closeModal();
+                        location.reload();
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting the supply.');
+                });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch existing supply distributions
+            fetch('fetch_supply_status.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const distributedIds = data.ranking_ids;
+
+                        // Loop through all rows in the table
+                        distributedIds.forEach(rankingId => {
+                            const row = document.getElementById(`resident-${rankingId}`);
+                            if (row) {
+                                // Replace the "Give Supply" button with "Notify" and "Received" buttons
+                                row.querySelector('td:last-child').innerHTML = `
+                            <button class="btn btn-notify" onclick="notifyResident(${rankingId})">Notify</button>
+                            <button class="btn btn-danger" onclick="markReceived(${rankingId})">Claimed</button>
+                        `;
+                            }
+                        });
+                    } else {
+                        console.error('Error fetching supply statuses:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        // Function to handle "Notify" action
+        function notifyResident(rankingId) {
+            alert(`Notification sent to resident with Ranking ID: ${rankingId}`);
+        }
+
+        // Function to handle "Received" action
+        function markReceived(rankingId) {
+            if (!confirm("Are you sure you want to mark this supply as received?")) {
+                return; // Exit if the user cancels
+            }
+
+            fetch('mark_received.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ranking_id: rankingId
+                    }),
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Supply marked as received successfully.');
+                        location.reload();
+                       
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while marking the supply as received.');
+                });
+        }
     </script>
 </body>
 
