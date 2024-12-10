@@ -152,6 +152,14 @@ $result = $stmt->get_result();
 
     <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
 
+    <div id="modal-notify" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; padding: 20px; background: white; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000;">
+        <div id="modal-notify-content">
+            <!-- The notification message will be dynamically inserted here -->
+        </div>
+        <button id="send-notify-button" class="btn btn-give">Send</button>
+        <button onclick="document.getElementById('modal-notify').style.display='none'; document.getElementById('overlay').style.display='none'" class="btn btn-danger">Close</button>
+    </div>
+
     <script>
         // document.addEventListener('DOMContentLoaded', function() {
         //     // Fetch existing supply distributions and update button states
@@ -319,37 +327,78 @@ $result = $stmt->get_result();
 
         // Function to handle "Notify" action
         function notifyResident(rankingId) {
-            alert(`Notification sent to resident with Ranking ID: ${rankingId}`);
+            document.getElementById('overlay').style.display = 'block';
+
+            fetch(`fetch_supply_distribution.php?ranking_id=${rankingId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const {
+                            resident_name: residentName,
+                            schedule_datetime: scheduleDatetime,
+                            supplies,
+                            mobile_number: mobileNumber
+                        } = data;
+
+                        // Create the list of supplies
+                        const suppliesList = supplies.map(supply => `${supply.quantity} ${supply.unit} of ${supply.name}`).join('<br>');
+
+                        // Create the notification message
+                        const message = `
+                    <p>Hi Sir/Ma'am <strong>${residentName}</strong>,</p>
+                    <p>You can get your Ayuda on <strong>${scheduleDatetime}</strong>.</p>
+                    <p>Supplies:</p>
+                    <p>${suppliesList}</p>
+                `;
+
+                        // Insert the message into the modal content area
+                        document.getElementById('modal-notify-content').innerHTML = message;
+
+                        // Display the modal
+                        const modal = document.getElementById('modal-notify');
+                        modal.style.display = 'block';
+
+                        // Attach the Send button functionality
+                        const sendButton = document.getElementById('send-notify-button');
+                        sendButton.onclick = function() {
+                            sendMessage(mobileNumber, message);
+                        };
+
+                    } else {
+                        alert(`Error: ${data.message}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching supply distribution:', error);
+                    alert('An error occurred while fetching the supply distribution.');
+                });
         }
 
-        // Function to handle "Received" action
-        function markReceived(rankingId) {
-            if (!confirm("Are you sure you want to mark this supply as received?")) {
-                return; // Exit if the user cancels
-            }
-
-            fetch('mark_received.php', {
+        // Function to send the SMS to the resident's mobile number
+        function sendMessage(mobileNumber, message) {
+            // Send the message to the backend (e.g., via an API or SMS service like Twilio)
+            fetch('send_sms.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        ranking_id: rankingId
-                    }),
+                        mobile_number: mobileNumber,
+                        message: message
+                    })
                 })
                 .then(response => response.json())
                 .then(result => {
                     if (result.success) {
-                        alert('Supply marked as received successfully.');
-                        location.reload();
-                       
+                        alert('Message sent successfully!');
+                        document.getElementById('modal-notify').style.display = 'none'; // Close the modal
                     } else {
                         alert('Error: ' + result.message);
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while marking the supply as received.');
+                    console.error('Error sending SMS:', error);
+                    alert('An error occurred while sending the message.');
                 });
         }
     </script>

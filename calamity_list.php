@@ -342,7 +342,11 @@
                                         <td>
                                             <!-- Action Buttons -->
                                             <a href="fetch_ranking.php?calamity=<?php echo urlencode($calamity['name']); ?>" class="ranking-button" style="padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; margin: 5px; text-decoration: none; display: inline-block;">Ranking</a>
-                                            <button class="received-button" style="padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; border-radius: 5px;">Received</button>
+                                            <a href="fetch_received.php?calamity=<?php echo urlencode($calamity['name']); ?>"
+                                                class="received-button"
+                                                style="padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; border-radius: 5px; margin: 5px; text-decoration: none; display: inline-block;">
+                                                Received
+                                            </a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
